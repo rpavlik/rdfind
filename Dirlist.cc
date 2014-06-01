@@ -18,6 +18,11 @@ $Id: Dirlist.cc 803 2013-01-26 04:22:16Z paul $
 
 #include "RdfindDebug.hh" //debug macros
 
+#ifdef _WIN32
+#define lstat stat
+#define S_ISLNK(X) 0
+#endif
+
 int Dirlist::walk(const std::string &dir,const int recursionlevel)
 {
   using namespace std;
