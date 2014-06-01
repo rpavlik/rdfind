@@ -139,6 +139,7 @@ int Rdutil::deleteduplicates(bool dryrun) {
     return applyactiononfile(m_list,&Fileinfo::static_deletefile);
 }
 
+#ifndef _WIN32
 int Rdutil::makesymlinks(bool dryrun) {
   if(dryrun){
     dryrun_helper<std::ostream> obj(cout,"symlink "," to ","");
@@ -156,6 +157,7 @@ int Rdutil::makehardlinks(bool dryrun) {
   else
   return applyactiononfile(m_list,&Fileinfo::static_makehardlink);
 }
+#endif
 
 //mark files with a unique number
 int Rdutil::markitems() {

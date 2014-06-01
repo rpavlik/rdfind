@@ -88,8 +88,10 @@ void usage()
   cout<<"file is found on several places, the file found in the directory first"<<endl;
   cout<<" encountered on the command line is kept, and the others are considered duplicate."<<endl;
   cout<<" options are (default choice within parantheses) "<<endl<<endl;
+#ifndef _WIN32
   cout<<" -makesymlinks      true |(false) replace duplicate files with symbolic links"<<endl;
   cout<<" -makehardlinks     true |(false) replace duplicate files with hard links"<<endl;
+#endif
   cout<<" -deleteduplicates  true |(false) delete duplicate files"<<endl;
   cout<<" -ignoreempty      (true)| false  ignore empty files"<<endl;
   cout<<" -removeidentinode (true)| false  ignore files with nonunique device and inode"<<endl;
@@ -159,6 +161,7 @@ int main(int narg, char *argv[])
     
     //   cout<<"read argument \""<<arg<<"\""<<endl;
     if(arg.at(0)=='-') {
+#ifndef _WIN32
       if (arg=="-makesymlinks" && n<(narg-1)) {
 	string nextarg(argv[1+n]);n++;     
 	if (nextarg=="true")
@@ -181,7 +184,9 @@ int main(int narg, char *argv[])
 	  return -1;
 	}
       }     
-      else if (arg=="-makeresultsfile" && n<(narg-1)) {
+      else
+#endif // _WIN32
+      if (arg=="-makeresultsfile" && n<(narg-1)) {
 	string nextarg(argv[1+n]);n++;     
 	if (nextarg=="true")
 	  makeresultsfile=true;
@@ -481,6 +486,7 @@ int main(int narg, char *argv[])
     gswd.printtofile(resultsfile);
   }
 
+#ifndef _WIN32
   //traverse the list and replace with symlinks
   if(makesymlinks) {
      cout<<dryruntext<<"Now making symbolic links. creating "<<endl;
@@ -496,6 +502,7 @@ int main(int narg, char *argv[])
     cout<<"Making "<<tmp<<" links."<<endl;
     return 0;
   }
+#endif // _WIN32
 
  //traverse the list and delete files
   if(deleteduplicates) {

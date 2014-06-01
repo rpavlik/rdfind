@@ -208,6 +208,7 @@ int makeReadyForLink(std::string &target, const std::string &location_)
   return 0;
 }
 
+#ifndef _WIN32
 //makes a symlink that points to A
 int Fileinfo::makesymlink(const Fileinfo &A) {
   int retval=0;
@@ -257,6 +258,8 @@ int Fileinfo::makehardlink(const Fileinfo &A) {
   return retval;
 }
 
+#endif // _WIN32
+
 int Fileinfo::static_deletefile(Fileinfo &A, const Fileinfo &B) {
   //delete A.
 
@@ -266,6 +269,7 @@ int Fileinfo::static_deletefile(Fileinfo &A, const Fileinfo &B) {
   return A.deletefile();
 }
 
+#ifndef _WIN32
 int Fileinfo::static_makesymlink(Fileinfo &A, const Fileinfo &B) { 
   //  cout<<"wants to make symlink from file "<<A.name()<<" to "<<B.name()<<endl;
   //  return 0;
@@ -277,7 +281,7 @@ int Fileinfo::static_makehardlink(Fileinfo &A, const Fileinfo &B) {
   //  return 0;
   return A.makehardlink(B);
 }
-
+#endif // _WIN32
 
 
 bool Fileinfo::compareonbytes(const Fileinfo &a, const Fileinfo &b)
