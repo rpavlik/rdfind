@@ -488,8 +488,20 @@ int Rdutil::marksingle(std::vector<Fileinfo>::iterator start,
   return 0;
 }
 
-
-
+#ifdef _WIN32
+#define WIN32_LEAN_AND_MEAN
+#include <windows.h>
+static void nsleep(long nsecsleep) {
+    Sleep(nsecsleep / 1000000);
+}
+#else
+static void nsleep(long nsecsleep) {
+    struct timespec time;
+    time.tv_sec=0;
+    time.tv_nsec=nsecsleep;
+    nanosleep(&time,0);
+}
+#endif
 
 //read some bytes. note! destroys the order of the list.
 int Rdutil::fillwithbytes(enum Fileinfo::readtobuffermode type,
@@ -506,13 +518,10 @@ int Rdutil::fillwithbytes(enum Fileinfo::readtobuffermode type,
     }
   else {
     //shall we do sleep between each file or not
-    struct timespec time;
-    time.tv_sec=0;
-    time.tv_nsec=nsecsleep;
-        
+
     for(it=m_list.begin(); it!=m_list.end();++it){
       it->fillwithbytes(type,lasttype);  
-      nanosleep(&time,0);
+      nsleep(nsecsleep);
     }
   }
 
