@@ -495,7 +495,7 @@ int main(int narg, char *argv[])
     return 0;
   }
 
-  //traverse the list and replace with symlinks
+  //traverse the list and replace with hard links
   if(makehardlinks) {
     cout<<dryruntext<<"Now making hard links."<<endl;
     int tmp=gswd.makehardlinks(dryrun);
